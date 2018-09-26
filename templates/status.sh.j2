@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+PROCESS="{{ cockroachdb_dir_app }}/cockroach"
+pgrep -f "$PROCESS" &> /dev/null && echo "running" && exit 0
+echo "stopped" && exit 1

@@ -1,0 +1,61 @@
+---
+- name: create app directory
+  file: path={{ cockroachdb_dir_app }} state=directory
+
+- name: create log directory
+  file: path={{ cockroachdb_dir_log }} state=directory
+
+- name: create data directory
+  file: path={{ cockroachdb_dir_data }} state=directory
+
+- name: System group management 
+  group:
+    name: "{{ cockroachdb_group }}"
+    state: present  
+
+- name: System user management
+  user:
+    name: "{{ cockroachdb_user }}"
+    groups: "{{ cockroachdb_group }}"
+    append: yes
+
+- name: copy and unarchive app
+  unarchive:
+    src: "{{ cockroachdb_archive_location }}"
+    dest: "{{ cockroachdb_dir_app }}"
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+    validate_certs: no
+
+- name: template start.sh
+  template:
+    src: start.sh.j2
+    dest: "{{ cockroachdb_dir_app }}/start.sh"
+    mode: "u=rwx,g=rx,o=rx"
+
+- name: template stop.sh
+  template:
+    src: stop.sh.j2
+    dest: "{{ cockroachdb_dir_app }}/stop.sh"
+    mode: "u=rwx,g=rx,o=rx"
+
+- name: template status.sh
+  template:
+    src: status.sh.j2
+    dest: "{{ cockroachdb_dir_app }}/status.sh"
+    mode: "u=rwx,g=rx,o=rx"        
+
+- name: template sql.sh
+  template:
+    src: sql.sh.j2
+    dest: "{{ cockroachdb_dir_app }}/sql.sh"
+    mode: "u=rwx,g=rx,o=rx"        
+
+- name: dir app rights management
+  file: dest="{{ cockroachdb_dir_app }}" owner="{{ cockroachdb_user }}" group="{{ cockroachdb_group }}" mode=u=rwX,g=rX,o=rX recurse=yes
+
+- name: dir log rights management
+  file: dest="{{ cockroachdb_dir_log }}" owner="{{ cockroachdb_user }}" group="{{ cockroachdb_group }}" mode=u=rwX,g=rX,o=rX recurse=yes
+
+- name: dir data rights management
+  file: dest="{{ cockroachdb_dir_data }}" owner="{{ cockroachdb_user }}" group="{{ cockroachdb_group }}" mode=u=rwX,g=rX,o=rX recurse=yes  

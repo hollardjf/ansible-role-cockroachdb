@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+cd $(dirname $0)
+./cockroach sql --insecure --url="postgresql://root@localhost:26257?sslmode=disable"

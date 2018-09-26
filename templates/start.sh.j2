@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)
+
+SCRIPT_DIR="{{ cockroachdb_dir_app }}"
+SCRIPT_STDOUT="{{ cockroachdb_dir_log }}/cockroach.out"
+SCRIPT_DIR_DATA="{{ cockroachdb_dir_data }}"
+SCRIPT_BIN="{{ cockroachdb_dir_app }}/cockroach start --insecure --log-dir={{ cockroachdb_dir_log }} --store=$SCRIPT_DIR_DATA"
+SCRIPT_USER="{{ cockroachdb_user }}"
+
+[[ $(./status.sh) == "running" ]] && echo "already running" && exit 3
+sudo -u $SCRIPT_USER -i bash -c "cd $SCRIPT_DIR ; nohup $SCRIPT_BIN &> $SCRIPT_STDOUT &"
+
+# ports used for internal and client traffic (26257) 
+# HTTP requests from the Admin UI (8080)

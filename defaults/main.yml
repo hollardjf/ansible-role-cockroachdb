@@ -1,0 +1,8 @@
+---
+cockroachdb_version: "2.0.5"
+cockroachdb_archive_location: "https://binaries.cockroachdb.com/cockroach-v2.0.5.linux-amd64.tgz"
+cockroachdb_dir_app: "/opt/apps/cockroachdb/"
+cockroachdb_dir_log: "/var/log/cockroachdb/"
+cockroachdb_dir_data: "/var/lib/cockroachdb/"
+cockroachdb_user: "cockroachdb"
+cockroachdb_group: "cockroachdb"
